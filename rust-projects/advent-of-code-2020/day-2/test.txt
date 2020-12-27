@@ -1,0 +1,20 @@
+"7-10 q: nfbrgwqlvljgq" string str
+ 0123456789...
+
+if str[i] is a dash
+    index_dash = i;
+
+    stoi(ip.substr(0, index_dash));'
+
+
+"790-800 q: nfbrgwqlvljgq" string str
+ 012345678901
+
+ index_dash = 3
+ index_char = 8
+
+ len_min = atoi(ip.substr(0, index_dash))
+ len_max = atoi(ip.substr(index_dash + 1, index_char - index_dash - 2))
+
+1-3 h: dhrhh
+012345678901
