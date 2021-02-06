@@ -1,47 +1,44 @@
 use std::io;
-use std::collections::HashMap;
 
-    pub fn length_of_longest_substring(s: String) -> i32 {
-        // Hashmap holding a character and the last index it was at
-        let mut characters: HashMap<char, usize> = HashMap::new();
-        
-        let mut index_cutoff = 0;
-        let mut max: i32 = 0;
-        let mut index: usize = 0;
-        
-        if s.len() == 0 {
-            return 0;
-        }
-        
-        for (i, c) in s.chars().enumerate() {
-            match characters.insert(c, i) {
-                None => (),
-                Some(latest_index) => {
-                    // If there's a repeat within the bounds of the cutoff,
-                    // then restart the count and update the cutoff
-                    if latest_index >= index_cutoff {
-                        // Check for new max
-                        if (i - index_cutoff) as i32 > max {
-                            max = (i - index_cutoff) as i32;
-                        }
-                        
-                        index_cutoff = latest_index + 1;
-                        
-                    }
+pub fn longest_palindrome(s: String) -> String {
+    let str_len = s.len();
+
+    let mut best: (String, usize) = ("".to_string(), 0);
+
+    for (i, c) in s.chars().enumerate() {
+        for (j, d) in s.chars().rev().enumerate() {
+            if c == d && str_len - j - i > best.1 && is_palindrome(&s[i..str_len - j]) {
+                best.0 = s[i..str_len - j].to_string();
+                best.1 = str_len - j - i;
+                if best.1 > str_len / 2 {
+                    return best.0;
                 }
+                break;
             }
-            index = i + 1;
+            if i == str_len - j - 1 {
+                if best.1 == 0 {
+                    best.0 = c.to_string();
+                    best.1 = 1;
+                }
+                break;
+            }
         }
-        
-        if (index - index_cutoff) as i32 > max {
-            max = (index - index_cutoff) as i32;
-        }
-        
-        max
     }
 
-fn main() {
-    println!(" {}", i32::MAX);
-    println!("{}", i32::MIN);
+    best.0
+}
 
+fn is_palindrome(substr: &str) -> bool {
+    let len: usize = substr.len();
+
+    if len < 2 {
+        return true;
+    }
+
+    substr.chars().nth(0).unwrap() == substr.chars().nth(len - 1).unwrap()
+        && is_palindrome(&substr[1..len - 1])
+}
+
+fn main() {
+    println!("{}", longest_palindrome("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabcaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa".to_string()));
 }
