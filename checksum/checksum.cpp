@@ -55,6 +55,40 @@ int main(int argc, char *argv[])
     std::string input = string_stream.str();
 
 
+    // Add all values to the checksum
+    int i, j;
+    int current_check;
+    int str_size = input.size();
+    for (i = 0; input[i] != '\n'; i++)
+    {
+        current_check = 0;
+
+        // If the checksum size is over 8, then multiple numbers need to be bitshifted
+        for (j = 0; j < checksum_size; j += 8, i++)
+        {
+            // Pad ending if need be
+            if (i != str_size)
+                current_check += input[i];
+            else
+                current_check += 'X';
+
+            current_check = current_check << 8;    
+        }
+
+        checksum += current_check;
+    }
+
+    // Truncate the checksum to the appropriate number of bits
+    checksum = checksum & ((1 << checksum_size) - 1);
+
+
+    // Print input
+    i = 0;
+    while (i < str_size)
+    {
+        printf(%.80s, input + i);
+        i += 80;
+    }
     // Output result
     printf("%2d bit checksum is %8lx for all %4d chars\n", checksum_size, checksum, character_count);
 
