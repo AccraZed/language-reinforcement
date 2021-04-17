@@ -9,7 +9,7 @@ import (
 
 const ARR_SIZE = 10000000
 const ARR_SCOPE = 100000000
-const CONCUR_THRESHOLD = 10000
+const CONCUR_THRESHOLD = 5000
 
 func main() {
 	rand.Seed(time.Now().Unix())
